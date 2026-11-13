@@ -30,18 +30,50 @@
 
 	<dependencies>
 		<dependency>
+			<!-->starter-webmvc: é o Spring Web TRAZENDO o Spring MVC
+			 e o Tomcat embutido, e é o que permite usar:
+			 @RestController, @GetMapping e as demais anotações de rota.-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
+
 		<dependency>
+			<!--starter-validation:Traz o Bean Validation, com anotações como @NotBlank, @Min e @Valid,
+			eh usado para as regras de nome, time e camisa.-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
+
+		<!-- Spring Data JPA (inclui Hibernate como implementação do JPA) -->
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- Banco de dados H2 em memória -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Console web do H2 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-h2console</artifactId>
+		</dependency>
+
+		<!--TESTES-->
+		<dependency>
+			<!--starter-test: traz as ferramentas de teste (JUnit, Mockito e outras).
+             Veio sozinho, com scope de teste.-->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Os dois proximos starters:trazem o suporte a teste de cada um dos dois starters acima.
+		 Também são só de teste.-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation-test</artifactId>
