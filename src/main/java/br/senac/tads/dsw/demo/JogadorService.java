@@ -11,7 +11,7 @@ public interface JogadorService {
 
 	List<JogadorDto> obterJogadores();
 
-	Optional<JogadorDto> obterjogador();
+	Optional<JogadorDto> obterJogador(Long id);
 
 	JogadorDto incluirNovoJogador(JogadorDto jogador);
 }
