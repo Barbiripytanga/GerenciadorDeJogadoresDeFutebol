@@ -8,51 +8,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Demo</title>
+  <title>Gerenciador de Jogadores de Futebol</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 720px; margin: 2.5rem auto; padding: 0 1.25rem 5rem; color: #333; line-height: 1.6; }
-    h1 { color: #6db33f; border-bottom: 2px solid #6db33f; padding-bottom: 0.4rem; margin-bottom: 0.25rem; }
-    h2 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #888; margin-top: 2rem; margin-bottom: 0.5rem; }
-    a { color: #6db33f; }
-    ul { padding-left: 1.5rem; margin: 0; }
-    li { margin: 0.35rem 0; }
-    .meta { background: #f6f8f6; border: 1px solid #d4e8c4; border-radius: 6px; padding: 1rem 1.25rem; font-size: 0.875rem; }
-    .hash { font-family: monospace; font-size: 0.78rem; word-break: break-all; color: #666; margin: 0.25rem 0 0; }
-    .generated { font-size: 0.8rem; color: #999; margin-top: 0.5rem; }
-    .curiosity { background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; border-radius: 4px; padding: 0.75rem 1rem; margin-top: 2rem; font-size: 0.875rem; color: #78450e; }
-    .curiosity strong { display: block; margin-bottom: 0.25rem; }
-    .site-footer { position: fixed; bottom: 0; left: 0; right: 0; background: #1e2d1e; color: #7a9a7a; font-size: 0.75rem; text-align: center; padding: 0.6rem 1rem; border-top: 1px solid #2e4a2e; }
-    .site-footer a { color: #6db33f; text-decoration: none; }
-    .site-footer a:hover { text-decoration: underline; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 15px; }
+    th, td { border: 1px solid #ccc; padding: 6px; text-align: left; }
+    .lesionado { color: red; font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>Demo</h1>
-  <p>Projeto de demonstração com Spring Boot</p>
+<h1>Gerenciador de Jogadores de Futebol</h1>
 
-  <h2>Links de apoio do projeto</h2>
-  <ul>
+<div id="mensagem"></div>
 
-    <li><a href="https://github.com/ftsuda-senac/dicas-desenvolvimento/blob/main/Dicas-e-Tutoriais-Spring.md" target="_blank" rel="noopener noreferrer">Dicas e Tutoriais Spring</a></li>
-  </ul>
+<div id="lista-jogadores"></div>
 
-  <div class="curiosity">
-    <strong>🔍 Para pesquisar:</strong>
-    Por que esta página se chama <code>index.html</code>?
-  </div>
+<button type="button" id="btn-incluir">Incluir novo jogador</button>
+<!--formulario -->
+<div id="formulario-jogador" hidden>
+  <h2>Incluir novo jogador</h2>
 
-  <h2>Identificação do projeto</h2>
-  <div class="meta">
-    <strong>Desenvolvedores:</strong>
-    <ul>
-      <li>Barbara de Oliveira Silva</li>
-    </ul>
-    <p class="hash"><strong>hash-identificacao:</strong> 671baaba76f090b22806d0fc7f8f62484a2f03cec30a15bdc8bf8cf5a38322a5</p>
-    <p class="generated">Gerado em: 12/11/2026, 14:50:22</p>
-  </div>
+  <form id="form-jogador">
 
-  <footer class="site-footer">
-    Gerado pelo <a href="https://ftsuda-senac.github.io/tads-spring-initializr/" target="_blank" rel="noopener noreferrer">TADS Spring Initializr</a> — v1.1.8
-  </footer>
+    <label for="nome">Nome</label>
+    <input type="text" id="nome" name="nome" required minlength="2">
+
+    <label for="numeroCamisa">Número da camisa</label>
+    <input type="number" id="numeroCamisa" name="numeroCamisa" min="1" max="99" required>
+
+    <label for="time">Time</label>
+    <input type="text" id="time" name="time" required minlength="2">
+
+    <p>Lesionado</p>
+
+    <input type="radio" id="nao" name="lesionado" value="false" checked>
+    <label for="nao">Não</label>
+
+    <input type="radio" id="sim" name="lesionado" value="true">
+    <label for="sim">Sim</label>
+
+    <label for="observacoes">Observações</label>
+    <textarea id="observacoes" name="observacoes"></textarea>
+
+    <button type="submit">Salvar</button>
+
+  </form>
+</div>
+
+
+<footer>
+  <p>Barbara de Oliveira Silva | Turma 3A Noturno | 2026</p>
+  <p>Usou IA: SIM — ChatGPT e Claude. Utilizados como apoio na compreensão dos requisitos, orientação sobre HTML, CSS e JavaScript e revisão do código.</p>
+</footer>
+
+<script>
+  const botaoIncluir = document.getElementById("btn-incluir");
+  const formularioJogador = document.getElementById("formulario-jogador");
+
+  botaoIncluir.addEventListener("click", function() {
+    formularioJogador.hidden = false;
+  });
+
+  const formulario = document.getElementById("form-jogador");
+  const mensagem = document.getElementById("mensagem");
+
+  formulario.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const nome = document.getElementById("nome").value.trim();
+    const numeroCamisa = Number(document.getElementById("numeroCamisa").value);
+    const time = document.getElementById("time").value.trim();
+    const lesionado = document.querySelector('input[name="lesionado"]:checked').value;
+    const observacoes = document.getElementById("observacoes").value;
+
+    if (nome.length < 2) {
+      mensagem.textContent = "O nome deve ter pelo menos 2 caracteres.";
+      return;
+    }
+
+    if (time.length < 2) {
+      mensagem.textContent = "O time deve ter pelo menos 2 caracteres.";
+      return;
+    }
+
+    if (numeroCamisa < 1 || numeroCamisa > 99 || !Number.isFinite(numeroCamisa)) {
+      mensagem.textContent = "O número da camisa deve estar entre 1 e 99.";
+      return;
+    }
+
+    mensagem.textContent = "Dados validados com sucesso!";
+
+    console.log("Nome:", nome);
+    console.log("Número da camisa:", numeroCamisa);
+    console.log("Time:", time);
+    console.log("Lesionado:", lesionado);
+    console.log("Observações:", observacoes);
+  });
+
+  async function listarJogadores(){
+    try{
+      const resposta = await fetch("/jogadores");
+      if(!resposta.ok){
+        throw new Error("Erro ao buscar jogadores: " + resposta.status);
+      }
+
+      const jogadores= await resposta.json();
+
+      console.log("Jogadores recebidos: ", jogadores);
+      return jogadores;
+    } catch (erro){
+      mensagem.textContent="Não foi possível carregar os jogadores.";
+      console.error("Erro: ", erro);
+
+      return [];
+    }
+  }
+  async function mostrarJogadores() {
+    const jogadores = await listarJogadores();
+    const container = document.getElementById("lista-jogadores");
+    container.innerHTML = "";
+
+    if (jogadores.length === 0) {
+      container.textContent = "Nenhum jogador cadastrado.";
+      return;
+    }
+
+    const tabela = document.createElement("table");
+    tabela.innerHTML = `<thead><tr>
+      <th>Nome</th><th>Camisa</th><th>Time</th><th>Situação</th><th>Observações</th><th>Ações</th>
+    </tr></thead>`;
+    const corpo = document.createElement("tbody");
+
+    for (const j of jogadores) {
+      const linha = document.createElement("tr");
+
+      for (const valor of [j.nome, j.numeroCamisa, j.time]) {
+        const td = document.createElement("td");
+        td.textContent = valor;
+        linha.appendChild(td);
+      }
+
+      const tdSituacao = document.createElement("td");
+      if (j.lesionado) {
+        tdSituacao.textContent = "LESIONADO";
+        tdSituacao.className = "lesionado";
+      }
+      linha.appendChild(tdSituacao);
+
+      const tdObs = document.createElement("td");
+      tdObs.textContent = j.observacoes ?? "";
+      linha.appendChild(tdObs);
+
+      const tdAcoes = document.createElement("td");
+
+      const btnAlterar = document.createElement("button");
+      btnAlterar.textContent = "Alterar";
+      btnAlterar.addEventListener("click", () => console.log("Alterar", j.id));
+
+      const btnExcluir = document.createElement("button");
+      btnExcluir.textContent = "Excluir";
+      btnExcluir.addEventListener("click", () => console.log("Excluir", j.id));
+
+      tdAcoes.append(btnAlterar, btnExcluir);
+      linha.appendChild(tdAcoes);
+
+      corpo.appendChild(linha);
+    }
+
+    tabela.appendChild(corpo);
+    container.appendChild(tabela);
+  }
+
+  mostrarJogadores();
+</script>
 </body>
 </html>
