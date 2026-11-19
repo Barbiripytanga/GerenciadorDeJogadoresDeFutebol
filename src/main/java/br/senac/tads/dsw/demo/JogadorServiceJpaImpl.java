@@ -64,6 +64,31 @@ public class JogadorServiceJpaImpl implements JogadorService {
 	//JogadorEntity salvo = jogadorRepository.save(toEntity(jogador));
 	//return toDto(salvo);
 
+	@Override
+	public JogadorDto alterarJogador(Long id, JogadorDto jogador){
+		JogadorEntity entidade= jogadorRepository.findById(id)
+			.orElseThrow(()-> new NaoEncontradoException("Jogador não encontrado: " + id ));
+
+// copia os novos dados do DTO para a entidade que veio do banco (o id não muda)
+		entidade.setNome(jogador.getNome());
+		entidade.setNumeroCamisa(jogador.getNumeroCamisa());
+		entidade.setTime(jogador.getTime());
+		entidade.setLesionado(jogador.getLesionado());
+		entidade.setObservacoes(jogador.getObservacoes());
+
+		// como a entidade já tem id, o save faz UPDATE (e não cria outro jogador)
+    JogadorEntity salvo =  jogadorRepository.save(entidade);
+	return toDto(salvo);
+	}
+
+	@Override
+	public void removerJogador(Long id){
+		if(!jogadorRepository.existsById(id)){
+			throw new NaoEncontradoException("Jogador não encontrado: " + id );
+		}
+		jogadorRepository.deleteById(id);
+	}
+
 
 	//entidade(banco) -> dto(api). copia o id tambem para a tela saber qual é o jogador.
 	private JogadorDto toDto(JogadorEntity entidade) {

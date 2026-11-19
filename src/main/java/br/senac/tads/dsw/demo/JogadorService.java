@@ -14,4 +14,14 @@ public interface JogadorService {
 	Optional<JogadorDto> obterJogador(Long id);
 
 	JogadorDto incluirNovoJogador(JogadorDto jogador);
+
+	JogadorDto alterarJogador(Long id, JogadorDto jogador);
+
+	void removerJogador(Long id);
+   //void   removerJogador   (Long id)   ;
+   // |           |              |       |
+   // |           |              |       termina a declaração (interface não tem corpo)
+    //|           |              o que o metodo RECEBE: um número do tipo Long, chamado id
+   // |           o NOME do metodo
+   // o que o metodo DEVOLVE: nada
 }
